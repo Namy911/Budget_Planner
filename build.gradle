@@ -3,8 +3,8 @@ buildscript {
     ext{
         nav_version = "2.3.5"
         retofit_version = "2.9.0"
-        kotlin_version = "1.5.20"
-        dagger_version = "2.28.3"
+        kotlin_version = "1.5.31"
+        dagger_version = "2.36"
         coroutines_version   = "1.5.0"
         lifecycle_version  = "2.4.0-rc01"
         ktx_fragnet = "1.4.0-alpha10"
@@ -18,9 +18,6 @@ buildscript {
         classpath "com.android.tools.build:gradle:7.0.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
