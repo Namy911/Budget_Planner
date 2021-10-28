@@ -2,6 +2,5 @@ package com.endava.budgetplanner.di.module
 
 import dagger.Module
 
-@Module
-object AppModule {
-}
+@Module(includes = [BindsAppModule::class, BindsViewModels::class])
+object AppModule

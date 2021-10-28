@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Budget Planner</string>
+    <!-- Registration -->
+    <string name="name_validation_error">First / Last name should contain only alpha characters</string>
+    <string name="name_length_error">First / Last name must be greater than 3 or equal to 22</string>
+    <string name="password_length_error">Password must be greater than 8 or equal to 22</string>
+    <string name="password_validation_error">Password is not valid</string>
+    <string name="email_validation_error">Please enter a valid email address</string>
+    <string name="email_length_error">Email must be greater than 8 or equal to 30</string>
 </resources>
