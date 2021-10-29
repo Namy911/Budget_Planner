@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background"
+    tools:context=".authentication.ui.views.WelcomeFragment">
+
+    <ImageView
+        android:id="@+id/welcome_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_welcome_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/welcome_card_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/xlarge_100"
+        android:layout_marginTop="@dimen/small_50"
+        android:src="@drawable/welcome_card_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/welcome_card_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xxlarge_100"
+        android:layout_marginEnd="@dimen/small_100"
+        android:src="@drawable/welcome_card_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_100"
+        android:text="@string/welcome_title"
+        android:textSize="@dimen/font_40"
+        app:layout_constraintStart_toStartOf="@+id/welcome_message"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_card_2" />
+
+    <TextView
+        android:id="@+id/welcome_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/xlarge_100"
+        android:layout_marginTop="@dimen/large_100"
+        android:text="@string/welcome_message"
+        android:textSize="@dimen/font_20"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_title" />
+
+    <Button
+        android:id="@+id/welcome_b_sign_in"
+        style="@style/GradientButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/welcome_message"
+        app:layout_constraintStart_toStartOf="@+id/welcome_message"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_message" />
+</androidx.constraintlayout.widget.ConstraintLayout>

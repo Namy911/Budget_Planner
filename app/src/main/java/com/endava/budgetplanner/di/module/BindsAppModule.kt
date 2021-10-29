@@ -3,8 +3,6 @@ package com.endava.budgetplanner.di.module
 import com.endava.budgetplanner.common.validators.*
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
-import com.endava.budgetplanner.data.api.ApiService
-import com.endava.budgetplanner.data.api.ApiServiceImp
 import com.endava.budgetplanner.data.repo.AuthenticationRepositoryImpl
 import com.endava.budgetplanner.data.repo.SplashRepositoryImp
 import com.endava.budgetplanner.data.repo.contract.AuthenticationRepository
@@ -12,7 +10,6 @@ import com.endava.budgetplanner.data.repo.contract.SplashRepository
 import com.endava.budgetplanner.di.annotations.*
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 @Module
 interface BindsAppModule {
