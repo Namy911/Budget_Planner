@@ -4,6 +4,7 @@ import android.content.Context
 import com.endava.budgetplanner.authentication.ui.views.RegisterFragment
 import com.endava.budgetplanner.di.module.AppModule
 import com.endava.budgetplanner.di.other.MultiViewModelFactory
+import com.endava.budgetplanner.splash.SplashActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(registerFragment: RegisterFragment)
+    fun inject(splashActivity: SplashActivity)
 
     val factories: MultiViewModelFactory
 

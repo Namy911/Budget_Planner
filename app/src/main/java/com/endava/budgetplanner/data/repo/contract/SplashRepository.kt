@@ -1,9 +1,9 @@
-package com.endava.budgetplanner.data.api
+package com.endava.budgetplanner.data.repo.contract
 
 import com.endava.budgetplanner.data.models.user.User
 import kotlinx.coroutines.flow.Flow
 
-interface ApiService{
+interface SplashRepository {
     //stub to delete
-    fun splashDummy(): Flow<User>
+    fun initConfig(): Flow<User>
 }

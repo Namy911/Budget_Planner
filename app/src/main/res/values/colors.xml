@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--    Splash Screen-->
+    <color name="bg_app_gradient_start">#24244F</color>
+    <color name="bg_app_gradient_end">#0D0D28</color>
 </resources>

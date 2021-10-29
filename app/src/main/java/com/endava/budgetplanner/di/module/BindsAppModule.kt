@@ -3,14 +3,16 @@ package com.endava.budgetplanner.di.module
 import com.endava.budgetplanner.common.validators.*
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
+import com.endava.budgetplanner.data.api.ApiService
+import com.endava.budgetplanner.data.api.ApiServiceImp
 import com.endava.budgetplanner.data.repo.AuthenticationRepositoryImpl
+import com.endava.budgetplanner.data.repo.SplashRepositoryImp
 import com.endava.budgetplanner.data.repo.contract.AuthenticationRepository
-import com.endava.budgetplanner.di.annotations.EmailValidatorQualifier
-import com.endava.budgetplanner.di.annotations.IsNotEmptyValidatorQualifier
-import com.endava.budgetplanner.di.annotations.NameValidatorQualifier
-import com.endava.budgetplanner.di.annotations.PasswordValidatorQualifier
+import com.endava.budgetplanner.data.repo.contract.SplashRepository
+import com.endava.budgetplanner.di.annotations.*
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
 @Module
 interface BindsAppModule {
@@ -19,6 +21,9 @@ interface BindsAppModule {
     fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    @Binds
+    fun bindSplashRepository(imp: SplashRepositoryImp): SplashRepository
 
     @Binds
     @EmailValidatorQualifier
