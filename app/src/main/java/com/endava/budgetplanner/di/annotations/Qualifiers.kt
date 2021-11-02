@@ -1,6 +1,5 @@
 package com.endava.budgetplanner.di.annotations
 
-import android.annotation.SuppressLint
 import javax.inject.Qualifier
 
 @Qualifier

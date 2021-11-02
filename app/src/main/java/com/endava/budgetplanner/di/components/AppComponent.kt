@@ -1,6 +1,7 @@
 package com.endava.budgetplanner.di.components
 
 import android.content.Context
+import com.endava.budgetplanner.authentication.ui.views.LoginFragment
 import com.endava.budgetplanner.authentication.ui.views.RegisterFragment
 import com.endava.budgetplanner.di.module.AppModule
 import com.endava.budgetplanner.di.other.MultiViewModelFactory
@@ -15,6 +16,7 @@ interface AppComponent {
 
     fun inject(registerFragment: RegisterFragment)
     fun inject(splashActivity: SplashActivity)
+    fun inject(registerFragment: LoginFragment)
 
     val factories: MultiViewModelFactory
 

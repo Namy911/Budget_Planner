@@ -60,7 +60,7 @@
 
     <Button
         android:id="@+id/welcome_b_sign_in"
-        style="@style/GradientButtonStyle"
+        style="@style/customButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/welcome_button_text"

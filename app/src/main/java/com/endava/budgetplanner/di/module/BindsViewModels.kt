@@ -1,6 +1,7 @@
 package com.endava.budgetplanner.di.module
 
 import androidx.lifecycle.ViewModel
+import com.endava.budgetplanner.authentication.ui.vm.LoginViewModel
 import com.endava.budgetplanner.authentication.ui.vm.RegisterViewModel
 import com.endava.budgetplanner.di.annotations.ViewModelKey
 import com.endava.budgetplanner.splash.SplashViewModel
@@ -18,4 +19,8 @@ interface BindsViewModels {
     @Binds
     @[IntoMap ViewModelKey(SplashViewModel::class)]
     fun bindSplashViewModel(splashViewModel: SplashViewModel): ViewModel
+
+    @Binds
+    @[IntoMap ViewModelKey(LoginViewModel::class)]
+    fun bindLoginViewModel(loginViewModel: LoginViewModel): ViewModel
 }

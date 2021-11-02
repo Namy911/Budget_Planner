@@ -7,7 +7,10 @@ import com.endava.budgetplanner.data.repo.AuthenticationRepositoryImpl
 import com.endava.budgetplanner.data.repo.SplashRepositoryImp
 import com.endava.budgetplanner.data.repo.contract.AuthenticationRepository
 import com.endava.budgetplanner.data.repo.contract.SplashRepository
-import com.endava.budgetplanner.di.annotations.*
+import com.endava.budgetplanner.di.annotations.EmailValidatorQualifier
+import com.endava.budgetplanner.di.annotations.IsNotEmptyValidatorQualifier
+import com.endava.budgetplanner.di.annotations.NameValidatorQualifier
+import com.endava.budgetplanner.di.annotations.PasswordValidatorQualifier
 import dagger.Binds
 import dagger.Module
 
