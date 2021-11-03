@@ -1,50 +1,77 @@
 package com.endava.budgetplanner.authentication.ui.views
 
 import android.content.Context
-import android.text.BoringLayout
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.LoginViewModel
+import com.endava.budgetplanner.authentication.ui.vm.states.LoginState
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
 import com.endava.budgetplanner.common.ext.provideAppComponent
-import com.endava.budgetplanner.common.utils.ValidationResult
 import com.endava.budgetplanner.databinding.FragmentLoginBinding
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
-    private lateinit var viewModel: LoginViewModel
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    private val viewModel by viewModels<LoginViewModel> {
+        factory
+    }
     private val textWatcher by lazy {
         DefaultTextWatcher {
-            handleButton()
+            viewModel.handleFields(getEmail(), getPassword())
         }
     }
 
     override fun onAttach(context: Context) {
-        context.provideAppComponent().inject(this)
-        viewModel = context.provideAppComponent().factories.create(LoginViewModel::class.java)
+        context.provideAppComponent().loginComponent().create().inject(this)
         super.onAttach(context)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        subscribeToObserver()
     }
 
     override fun onStart() {
         super.onStart()
         with(binding) {
-            email.addTextChangedListener(textWatcher)
-            password.addTextChangedListener(textWatcher)
+            loginEmail.addTextChangedListener(textWatcher)
+            loginPassword.addTextChangedListener(textWatcher)
             buttonSignIn.setOnClickListener {
-                if (handleResult(viewModel.checkEmailValidation(email.text.toString()))) {
-                    handleResult(viewModel.checkPasswordValidation(password.text.toString()))
-                }
+                viewModel.checkFieldsValidation(getEmail(), getPassword())
+            }
+            buttonSignup.setOnClickListener {
+                findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
         }
     }
 
     override fun onStop() {
         super.onStop()
-        binding.email.removeTextChangedListener(textWatcher)
-        binding.password.removeTextChangedListener(textWatcher)
+        binding.loginEmail.removeTextChangedListener(textWatcher)
+        binding.loginPassword.removeTextChangedListener(textWatcher)
+    }
+
+    override fun onDestroyView() {
+        viewModel.cancelJob()
+        super.onDestroyView()
     }
 
     override fun setupViewBinding(
@@ -55,19 +82,37 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         return FragmentLoginBinding.inflate(inflater, container, parent)
     }
 
-    private fun handleResult(result: ValidationResult): Boolean {
-        return when (result) {
-            is ValidationResult.Error -> {
-                Snackbar.make(binding.root, result.textId, Snackbar.LENGTH_SHORT).show()
-                false
-            }
-            is ValidationResult.Success -> true
+    private fun subscribeToObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loginState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collectLatest { state ->
+                    when (state) {
+                        is LoginState.ButtonState -> binding.buttonSignIn.isEnabled =
+                            state.isEnabled
+                        LoginState.Empty -> {
+                        }
+                        is LoginState.NetworkError -> {
+                            setProgressBarVisibility(false)
+                            showSnackBar(state.textId)
+                        }
+                        is LoginState.Success -> {
+                            setProgressBarVisibility(false)
+                            //for DEMO
+                            Log.d("MyLog", state.token)
+                            //findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
+                        }
+                        LoginState.Loading -> setProgressBarVisibility(true)
+                        is LoginState.ValidationError -> showSnackBar(state.textId)
+                    }
+                }
         }
     }
 
-    private fun handleButton() {
-        val email = binding.email.text.toString()
-        val password = binding.password.text.toString()
-        binding.buttonSignIn.isEnabled = viewModel.handleFields(email, password)
+    private fun getEmail() = binding.loginEmail.text.toString()
+
+    private fun getPassword() = binding.loginPassword.text.toString()
+
+    private fun setProgressBarVisibility(isVisible: Boolean) {
+        binding.loginProgressBar.isVisible = isVisible
     }
 }

@@ -1,8 +1,15 @@
 package com.endava.budgetplanner.data.repo.contract
 
+import com.endava.budgetplanner.common.utils.Resource
+import com.endava.budgetplanner.data.models.user.Token
+import com.endava.budgetplanner.data.models.user.User
+import com.endava.budgetplanner.data.models.user.UserLogin
+
 interface AuthenticationRepository {
 
-    fun registerNewUser()
+    suspend fun registerNewUser(user: User): Resource<Int>
 
-    fun login(): String
+    suspend fun login(userLogin: UserLogin): Resource<Token>
+
+    suspend fun getText(token: String): Resource<String>
 }

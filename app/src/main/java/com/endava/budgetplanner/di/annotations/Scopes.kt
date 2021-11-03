@@ -4,12 +4,16 @@ import javax.inject.Scope
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ActivityScope
+annotation class SignInScope
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class FragmentScope
+annotation class RegisterScope
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ApplicationScope
+annotation class SplashScope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class WelcomeScope

@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MultiViewModelFactory @Inject constructor(
-    private val viewModelFactories: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
+    private val viewModelFactories: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

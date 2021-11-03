@@ -2,6 +2,8 @@ package com.endava.budgetplanner.authentication.ui.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.endava.budgetplanner.R
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.databinding.FragmentWelcomeBinding
 
@@ -10,7 +12,7 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>() {
     override fun onStart() {
         super.onStart()
         binding.welcomeBSignIn.setOnClickListener {
-            TODO("Navigate to main screen")
+            findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
         }
     }
 

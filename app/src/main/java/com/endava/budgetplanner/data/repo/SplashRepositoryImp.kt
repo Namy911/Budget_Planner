@@ -8,6 +8,13 @@ import javax.inject.Inject
 class SplashRepositoryImp @Inject constructor()  : SplashRepository {
     //stub to delete
     override fun initConfig() = flowOf(
-        User("user1", "surname1", "user1@email.com")
+        User(
+            "asdfsdf",
+            "fsdfsdf",
+            "asdasd#12",
+            "Anroid",
+            "asep@mail.ru",
+            1000.0
+        )
     )
 }

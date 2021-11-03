@@ -1,6 +1,10 @@
 package com.endava.budgetplanner.di.module
 
-import com.endava.budgetplanner.common.validators.*
+import androidx.lifecycle.ViewModelProvider
+import com.endava.budgetplanner.common.validators.EmailValidator
+import com.endava.budgetplanner.common.validators.IsNotEmptyValidator
+import com.endava.budgetplanner.common.validators.NameValidator
+import com.endava.budgetplanner.common.validators.PasswordValidator
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
 import com.endava.budgetplanner.data.repo.AuthenticationRepositoryImpl
@@ -11,11 +15,15 @@ import com.endava.budgetplanner.di.annotations.EmailValidatorQualifier
 import com.endava.budgetplanner.di.annotations.IsNotEmptyValidatorQualifier
 import com.endava.budgetplanner.di.annotations.NameValidatorQualifier
 import com.endava.budgetplanner.di.annotations.PasswordValidatorQualifier
+import com.endava.budgetplanner.di.other.MultiViewModelFactory
 import dagger.Binds
 import dagger.Module
 
 @Module
-interface BindsAppModule {
+interface AppBindsModule {
+
+    @Binds
+    fun bindViewModelFactory(factory: MultiViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     fun bindAuthenticationRepository(

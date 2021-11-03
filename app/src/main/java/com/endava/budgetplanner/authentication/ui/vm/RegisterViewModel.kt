@@ -8,6 +8,4 @@ class RegisterViewModel @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
 
-    fun getText() = authenticationRepository.login()
-
 }
