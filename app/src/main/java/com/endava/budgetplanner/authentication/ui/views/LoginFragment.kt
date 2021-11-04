@@ -6,13 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.LoginViewModel
 import com.endava.budgetplanner.authentication.ui.vm.states.LoginState
@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "LoginFragment"
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     @Inject

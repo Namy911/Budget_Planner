@@ -25,4 +25,21 @@
     <string name="unknown_error">Unknown error</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <string name="txt_title_sing_up">Let\'s get you \n started</string>
+    <string name="btn_register_next">NEXT</string>
+    <string name="btn_register_sign_up">SIGN UP</string>
+    <string name="btn_register_sign_up_main">CONTINUE</string>
+    <string name="edt_register_name">First Name</string>
+    <string name="edt_register_sur_name">Last Name</string>
+    <string name="txt_register_step_1">Step 1 of 2</string>
+    <string name="txt_register_step_2">Step 2 of 2</string>
+    <string name="txt_initial_balance">Initial Balance</string>
+    <string name="txt_initial_balance2">$0.<small><small>00</small></small></string>
+    <string name="edt_register_email">Enter your email</string>
+    <string name="edt_register_pass">Enter your password</string>
+    <string name="edt_register_pass_confirm">Confirm password</string>
+    <string name="txt_sign_in">Sign In</string>
+    <string name="txt_title_register">Create your \n account</string>
 </resources>

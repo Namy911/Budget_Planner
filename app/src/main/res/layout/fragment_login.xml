@@ -8,34 +8,19 @@
     tools:context=".authentication.ui.views.LoginFragment">
 
     <TextView
-        android:id="@+id/button_signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large_100"
-        android:layout_marginEnd="@dimen/large_100"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/sign_up"
-        android:textSize="@dimen/font_36"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
+        style="@style/TitleStyle"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/normal_150"
-        android:layout_marginTop="@dimen/xlarge_150"
         android:text="@string/access_your_account"
-        android:textSize="@dimen/font_36"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/cards_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/normal_150"
+        android:layout_width="@dimen/img_cards_width"
+        android:layout_height="@dimen/img_cards_height"
+        android:layout_marginTop="@dimen/normal_500"
         android:contentDescription="@string/cards"
         android:src="@drawable/cards"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,19 +58,25 @@
             android:hint="@string/enter_your_password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/button_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_100"
+        android:layout_marginEnd="@dimen/large_100"
+        android:text="@string/sign_up"
+        android:textSize="@dimen/font_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_signIn"
-        style="@style/customButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/normal_100"
-        android:width="@dimen/signIn_button_width"
+        style="@style/ButtonStyle"
         android:enabled="false"
         android:text="@string/sign_in"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_layout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/login_progress_bar"

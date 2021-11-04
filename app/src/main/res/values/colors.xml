@@ -9,11 +9,18 @@
     <color name="black">#FF000000</color>
     <color name="purple">#6D6789</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--    Splash Screen-->
+    <color name="gray">#9E9898</color>
+
+    <!--    Splash Screen-->
+    <color name="bg_app_gradient_start">#24244F</color>
+    <color name="bg_app_gradient_end">#0D0D28</color>
     <color name="main_back_light">#24244F</color>
     <color name="main_back_dark">#0D0D28</color>
     <color name="gradient_purple">#CD4FF7</color>
     <color name="gradient_blue_light">#7653F6</color>
     <!--    Splash Screen-->
-    <color name="bg_app_gradient_start">#24244F</color>
-    <color name="bg_app_gradient_end">#0D0D28</color>
+    <color name="menu_roles">#2E2853</color>
+    <color name="menu_roles2">#0D2E2853</color>
 </resources>
