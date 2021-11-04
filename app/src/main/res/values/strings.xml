@@ -23,10 +23,12 @@
     <string name="cards">Cards</string>
     <string name="invalid_password_email_error">Incorrect username or password</string>
     <string name="unknown_error">Unknown error</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <string name="please_wait">Please wait...</string>
+    <string name="your_request_is_being_processed">Your request is being processed.</string>
+    <string name="authentication_failed">Authentication Failed!</string>
+    <string name="the_request_has_timed_out">The request has timed out.</string>
+    <string name="got_it">Got It!</string>
     <string name="txt_title_sing_up">Let\'s get you \n started</string>
     <string name="btn_register_next">NEXT</string>
     <string name="btn_register_sign_up">SIGN UP</string>
