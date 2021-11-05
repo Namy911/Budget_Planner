@@ -17,3 +17,7 @@ annotation class NameValidatorQualifier
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class IsNotEmptyValidatorQualifier
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class NumberValidatorQualifier

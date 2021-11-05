@@ -37,5 +37,7 @@
     <!--SignIn-->
     <dimen name="signIn_button_width">150dp</dimen>
     <dimen name="dialog_divider_height">1dp</dimen>
+    <dimen name="img_cards_width_small">100dp</dimen>
+    <dimen name="img_cards_height_small">250dp</dimen>
 
 </resources>

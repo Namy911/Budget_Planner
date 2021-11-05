@@ -62,7 +62,6 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_next"
         style="@style/ButtonStyle"
-        android:enabled="false"
         android:text="@string/btn_register_next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

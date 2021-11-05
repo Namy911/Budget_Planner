@@ -44,4 +44,8 @@
     <string name="edt_register_pass_confirm">Confirm password</string>
     <string name="txt_sign_in">Sign In</string>
     <string name="txt_title_register">Create your \n account</string>
+    <string name="password_not_matching">Passwords are not matching.</string>
+    <string name="number_length_error">Initial balance must be smaller or equal to 5 digits</string>
+    <string name="number_validation_error">Invalid initial balance</string>
+    <string name="error">An error occured</string>
 </resources>

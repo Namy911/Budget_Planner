@@ -7,7 +7,7 @@ import com.endava.budgetplanner.data.models.user.UserLogin
 
 interface AuthenticationRepository {
 
-    suspend fun registerNewUser(user: User): Resource<Int>
+    suspend fun registerNewUser(user: User): Resource<Any>
 
     suspend fun login(userLogin: UserLogin): Resource<Token>
 

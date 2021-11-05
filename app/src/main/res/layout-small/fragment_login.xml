@@ -11,48 +11,51 @@
         android:id="@+id/button_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large_100"
-        android:layout_marginEnd="@dimen/large_100"
+        android:layout_marginTop="@dimen/small_150"
+        android:layout_marginEnd="@dimen/small_150"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/sign_up"
-        android:textSize="@dimen/font_20"
+        android:textSize="@dimen/font_12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/normal_150"
-        android:layout_marginTop="@dimen/xlarge_150"
-        android:text="@string/access_your_account"
-        android:textSize="@dimen/font_36"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/cards_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="150dp"
         android:layout_marginTop="@dimen/normal_150"
         android:contentDescription="@string/cards"
         android:src="@drawable/cards"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_signup" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_150"
+        android:layout_marginTop="@dimen/small_150"
+        android:text="@string/access_your_account"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="@dimen/large_150"
         android:id="@+id/email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_150"
-        android:layout_marginEnd="@dimen/large_150"
+        android:layout_marginStart="@dimen/normal_100"
+        android:layout_marginEnd="@dimen/normal_100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cards_img">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_email"
+            android:textSize="@dimen/font_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_your_email" />
@@ -68,6 +71,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_password"
+            android:textSize="@dimen/font_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_your_password"
@@ -76,9 +80,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_signIn"
+        android:textSize="@dimen/font_12"
         style="@style/customButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/font_40"
         android:layout_marginTop="@dimen/normal_100"
         android:width="@dimen/signIn_button_width"
         android:enabled="false"
@@ -86,16 +91,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_layout" />
-
-    <ProgressBar
-        android:id="@+id/login_progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/normal_100"
-        android:indeterminateTint="@color/gradient_purple"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/email_layout"
-        app:layout_constraintEnd_toEndOf="@+id/email_layout"
-        app:layout_constraintStart_toStartOf="@+id/email_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

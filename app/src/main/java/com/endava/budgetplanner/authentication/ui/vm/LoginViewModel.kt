@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     @PasswordValidatorQualifier
     private val passwordValidator: Validator,
     @IsNotEmptyValidatorQualifier
-    private val isNotEmptyValidator: MultipleValidator,
+    private val isNotEmptyValidator: MultipleValidator
 ) : ViewModel() {
 
     private var loginJob: Job? = null

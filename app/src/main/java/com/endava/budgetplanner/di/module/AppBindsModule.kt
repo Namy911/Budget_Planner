@@ -1,25 +1,17 @@
 package com.endava.budgetplanner.di.module
 
 import androidx.lifecycle.ViewModelProvider
-import com.endava.budgetplanner.common.validators.EmailValidator
-import com.endava.budgetplanner.common.validators.IsNotEmptyValidator
-import com.endava.budgetplanner.common.validators.NameValidator
-import com.endava.budgetplanner.common.validators.PasswordValidator
+import com.endava.budgetplanner.common.validators.*
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
-import com.endava.budgetplanner.data.api.ApiService
 import com.endava.budgetplanner.data.repo.AuthenticationRepositoryImpl
 import com.endava.budgetplanner.data.repo.SplashRepositoryImp
 import com.endava.budgetplanner.data.repo.contract.AuthenticationRepository
 import com.endava.budgetplanner.data.repo.contract.SplashRepository
-import com.endava.budgetplanner.di.annotations.EmailValidatorQualifier
-import com.endava.budgetplanner.di.annotations.IsNotEmptyValidatorQualifier
-import com.endava.budgetplanner.di.annotations.NameValidatorQualifier
-import com.endava.budgetplanner.di.annotations.PasswordValidatorQualifier
+import com.endava.budgetplanner.di.annotations.*
 import com.endava.budgetplanner.di.other.MultiViewModelFactory
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 @Module
 interface AppBindsModule {
@@ -46,6 +38,10 @@ interface AppBindsModule {
     @Binds
     @NameValidatorQualifier
     fun bindNameValidator(nameValidator: NameValidator): Validator
+
+    @Binds
+    @NumberValidatorQualifier
+    fun bindBalanceValidator(numberValidator: BalanceValidator): Validator
 
     @Binds
     @IsNotEmptyValidatorQualifier

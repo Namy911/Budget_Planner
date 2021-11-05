@@ -27,7 +27,7 @@ class LoadingDialog : DialogFragment() {
     companion object {
         const val TAG = "loading_dialog"
 
-        fun newInstance(title: String, message: String) = ErrorDialog().apply {
+        fun newInstance(title: String, message: String) = LoadingDialog().apply {
             arguments = Bundle().apply {
                 putString(TITLE_KEY, title)
                 putString(MESSAGE_KEY, message)

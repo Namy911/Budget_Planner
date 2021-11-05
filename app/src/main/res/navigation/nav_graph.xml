@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/registerFragment">
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="com.endava.budgetplanner.authentication.ui.views.WelcomeFragment"
@@ -43,14 +43,20 @@
         <action
             android:id="@+id/action_registerDataFragment_to_registerDataRolesFragment"
             app:destination="@id/registerDataRolesFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.endava.budgetplanner.data.models.user.User" />
     </fragment>
     <fragment
         android:id="@+id/registerDataRolesFragment"
-        android:name="com.endava.budgetplanner.authentication.ui.views.RegisterDataRolesFragment"
+        android:name="com.endava.budgetplanner.authentication.ui.views.RegisterDataIndustryFragment"
         android:label="RegisterDataRolesFragment" >
         <action
             android:id="@+id/action_registerDataRolesFragment_to_welcomeFragment2"
             app:destination="@id/welcomeFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.endava.budgetplanner.data.models.user.User" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
