@@ -35,14 +35,24 @@
         android:id="@+id/dashboardFragment"
         android:name="com.endava.budgetplanner.dashboard.ui.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <argument
+            android:name="token"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/registerDataFragment"
         android:name="com.endava.budgetplanner.authentication.ui.views.RegisterDataFragment"
         android:label="RegisterDataFragment" >
         <action
             android:id="@+id/action_registerDataFragment_to_registerDataRolesFragment"
-            app:destination="@id/registerDataRolesFragment" />
+            app:destination="@id/registerDataRolesFragment"
+            app:enterAnim="@anim/scale_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/scale_out"
+            app:popUpTo="@id/registerDataFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="user"
             app:argType="com.endava.budgetplanner.data.models.user.User" />
@@ -53,7 +63,9 @@
         android:label="RegisterDataRolesFragment" >
         <action
             android:id="@+id/action_registerDataRolesFragment_to_welcomeFragment2"
-            app:destination="@id/welcomeFragment" />
+            app:destination="@id/welcomeFragment"
+            app:enterAnim="@anim/scale_in"
+            app:exitAnim="@anim/slide_out" />
         <argument
             android:name="user"
             app:argType="com.endava.budgetplanner.data.models.user.User" />
@@ -62,12 +74,23 @@
         android:id="@+id/registerFragment"
         android:name="com.endava.budgetplanner.authentication.ui.views.RegisterFragment"
         android:label="register_data_fragment"
-        tools:layout="@layout/register_data_fragment" >
+        tools:layout="@layout/register_data_fragment">
         <action
             android:id="@+id/action_registerFragment_to_registerDataFragment"
-            app:destination="@id/registerDataFragment" />
+            app:destination="@id/registerDataFragment"
+            app:enterAnim="@anim/scale_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/scale_out"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/scale_in"
+            app:exitAnim="@anim/slide_out" />
     </fragment>
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment" />
 </navigation>

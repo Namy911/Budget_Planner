@@ -35,7 +35,8 @@ class RegisterViewModel @Inject constructor(
             handleValidationResult(passwordValidator.isValid(password))
         ) {
             if (password == pasConf) {
-                _state.value = RegisterState.NavigateToNext
+                _state.value =
+                    RegisterState.NavigateToNext
             } else {
                 _state.value = RegisterState.Error(R.string.password_not_matching)
             }

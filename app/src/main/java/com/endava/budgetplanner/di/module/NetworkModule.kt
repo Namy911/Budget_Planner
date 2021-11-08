@@ -31,11 +31,10 @@ object NetworkModule {
     @Singleton
     fun provideGsonBuilder(): Gson = GsonBuilder().setLenient().create()
 
-    //In future I will replace that baseUrl,that's why I didn't put it in Constants
     @Provides
     @Singleton
     fun provideRetrofitInstance(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.100.18:8080/")
+        .baseUrl("http://172.23.160.146:8080/")
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(client)

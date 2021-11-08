@@ -2,24 +2,25 @@ package com.endava.budgetplanner.authentication.ui.views
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.LoginViewModel
 import com.endava.budgetplanner.authentication.ui.vm.states.LoginState
-import com.endava.budgetplanner.common.dialogs.LoadingDialog
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
 import com.endava.budgetplanner.common.dialogs.ErrorDialog
+import com.endava.budgetplanner.common.dialogs.LoadingDialog
+import com.endava.budgetplanner.common.dialogs.OneButtonDialog
 import com.endava.budgetplanner.common.ext.provideAppComponent
 import com.endava.budgetplanner.databinding.FragmentLoginBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "LoginFragment"
+
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     @Inject
@@ -49,8 +51,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        loadingDialog = LoadingDialog.newInstance(
+            getString(R.string.please_wait),
+            getString(R.string.your_request_is_being_processed)
+        )
         subscribeToObserver()
-        loadingDialog = LoadingDialog()
     }
 
     override fun onStart() {
@@ -101,12 +107,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                         }
                         is LoginState.Success -> {
                             dismissLoadingDialog()
-                            //for DEMO
-                            Log.d("MyLog", state.token)
-//                            findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
+                            LoginFragmentDirections.actionLoginFragmentToDashboardFragment(state.token)
                         }
-                        LoginState.Loading -> showLoadingDialog()
                         is LoginState.ValidationError -> showSnackBar(state.textId)
+                        LoginState.Loading -> showLoadingDialog()
+                        LoginState.ConnectionError -> {
+                            showConnectionErrorDialog()
+                        }
                     }
                 }
         }
@@ -118,6 +125,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             getString(textId),
             getString(R.string.got_it)
         ).show(parentFragmentManager, ErrorDialog.TAG)
+    }
+
+    private fun showConnectionErrorDialog() {
+        OneButtonDialog.newInstance(
+            getString(R.string.lost_internet_connection),
+            getString(R.string.lost_internet_connection_mes),
+            getString(R.string.retry)
+        ) {
+            viewModel.checkFieldsValidation(getEmail(), getPassword())
+        }.show(parentFragmentManager, OneButtonDialog.TAG)
     }
 
     private fun getEmail() = binding.loginEmail.text.toString()

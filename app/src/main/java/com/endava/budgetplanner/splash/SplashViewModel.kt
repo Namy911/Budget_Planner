@@ -1,39 +1,36 @@
 package com.endava.budgetplanner.splash
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.endava.budgetplanner.data.models.user.User
-import com.endava.budgetplanner.data.repo.contract.SplashRepository
-import kotlinx.coroutines.Dispatchers
+import com.endava.budgetplanner.common.preferences.LaunchPreferences
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class SplashState {
-    object Loading : SplashState()
-    data class LoadComplete(val data: User) : SplashState()
-    data class Error(val error: String) : SplashState()
-}
+private const val SPLASH_DELAY = 3000L
 
 class SplashViewModel @Inject constructor(
-    private val repo: SplashRepository
+    private val launchPreferences: LaunchPreferences
 ) : ViewModel() {
-    //stub to delete
+
     private val _splashState = MutableStateFlow<SplashState>(SplashState.Loading)
-    val splashState : StateFlow<SplashState> = _splashState.asStateFlow()
+    val splashState: StateFlow<SplashState> = _splashState.asStateFlow()
 
     init {
         configInit()
     }
-    //stub to delete
-    private fun configInit(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.initConfig().distinctUntilChanged().collectLatest {
-                delay(3000L)
-                _splashState.value = SplashState.LoadComplete(it)
-            }
-        }
+
+    private fun configInit() = viewModelScope.launch {
+        delay(SPLASH_DELAY)
+        val isFirstLaunch = launchPreferences.getData { preferences ->
+            preferences[LaunchPreferences.LAUNCH_KEY]
+        }.first()
+        _splashState.value = if (isFirstLaunch != null)
+            SplashState.LoadComplete(true)
+        else SplashState.LoadComplete(false)
     }
 }

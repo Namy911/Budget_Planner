@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.RegisterViewModel
 import com.endava.budgetplanner.authentication.ui.vm.states.RegisterState
 import com.endava.budgetplanner.common.base.BaseFragment
@@ -62,7 +63,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             viewModel.checkFieldsValidation(getEmail(), getPassword(), getPasswordConf())
         }
         txtSignIn.setOnClickListener {
-            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+            if (!findNavController().popBackStack(
+                    R.id.action_registerFragment_to_loginFragment,
+                    false
+                )
+            )
+                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
     }
 

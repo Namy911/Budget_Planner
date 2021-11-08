@@ -23,6 +23,7 @@ import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
 import com.endava.budgetplanner.common.dialogs.ErrorDialog
 import com.endava.budgetplanner.common.dialogs.LoadingDialog
+import com.endava.budgetplanner.common.dialogs.OneButtonDialog
 import com.endava.budgetplanner.common.ext.provideAppComponent
 import com.endava.budgetplanner.data.models.user.User
 import com.endava.budgetplanner.databinding.RegisterUserRolesFragmentBinding
@@ -66,16 +67,7 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
         super.onStart()
         binding.edtInitialBalance.addTextChangedListener(textWatcher)
         binding.btnSignUp.setOnClickListener {
-            viewModel.register(
-                User(
-                    args.user.firstName,
-                    args.user.lastName,
-                    args.user.password,
-                    industryItem,
-                    args.user.email,
-                    getInitialBalance().toDouble()
-                )
-            )
+            viewModel.register(getUser())
         }
     }
 
@@ -115,6 +107,7 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
                         }
                         is RegisterFinalState.ButtonState -> binding.btnSignUp.isEnabled =
                             state.isEnabled
+                        RegisterFinalState.ConnectionError -> showConnectionErrorDialog()
                     }
                 }
         }
@@ -136,6 +129,16 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
         }
     }
 
+    private fun showConnectionErrorDialog() {
+        OneButtonDialog.newInstance(
+            getString(R.string.lost_internet_connection),
+            getString(R.string.lost_internet_connection_mes),
+            getString(R.string.retry)
+        ) {
+            viewModel.register(getUser())
+        }.show(parentFragmentManager, OneButtonDialog.TAG)
+    }
+
     private fun showLoadingDialog() {
         loadingDialog = LoadingDialog.newInstance(
             getString(R.string.please_wait),
@@ -147,6 +150,15 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
     private fun dismissLoadingDialog() {
         loadingDialog.dismiss()
     }
+
+    private fun getUser() = User(
+        args.user.firstName,
+        args.user.lastName,
+        args.user.password,
+        industryItem,
+        args.user.email,
+        getInitialBalance().toDouble()
+    )
 
     private fun showErrorAlertDialog(@StringRes message: Int) {
         ErrorDialog.newInstance(

@@ -13,9 +13,9 @@ class EmailValidator @Inject constructor() : Validator {
 
     override fun isValid(field: CharSequence): ValidationResult {
         val regex = EMAIL_REGEX.toRegex()
-        return if (field.length < MIN_LENGTH || field.length > MAX_LENGTH)
-            ValidationResult.Error(R.string.email_length_error)
-        else if (!regex.matches(field.trim()))
+        return if ((field.length < MIN_LENGTH || field.length > MAX_LENGTH)
+            || !regex.matches(field.trim())
+        )
             ValidationResult.Error(R.string.email_validation_error)
         else ValidationResult.Success
     }

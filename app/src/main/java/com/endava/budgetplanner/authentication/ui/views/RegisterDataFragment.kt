@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.endava.budgetplanner.authentication.ui.vm.RegisterDataViewModel
-import com.endava.budgetplanner.authentication.ui.vm.states.RegisterState
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterDataState
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
 import com.endava.budgetplanner.common.ext.provideAppComponent
@@ -80,11 +80,12 @@ class RegisterDataFragment : BaseFragment<RegisterDataFragmentBinding>() {
             viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collectLatest { state ->
                     when (state) {
-                        is RegisterState.ButtonState -> binding.btnNext.isEnabled = state.isEnabled
-                        RegisterState.Empty -> {
+                        is RegisterDataState.ButtonState -> binding.btnNext.isEnabled =
+                            state.isEnabled
+                        RegisterDataState.Empty -> {
                         }
-                        is RegisterState.Error -> showSnackBar(state.textId)
-                        RegisterState.NavigateToNext -> findNavController().navigate(
+                        is RegisterDataState.Error -> showSnackBar(state.textId)
+                        RegisterDataState.NavigateToNext -> findNavController().navigate(
                             RegisterDataFragmentDirections
                                 .actionRegisterDataFragmentToRegisterDataRolesFragment(
                                     User(

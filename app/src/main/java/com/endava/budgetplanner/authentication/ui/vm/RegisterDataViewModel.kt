@@ -1,7 +1,7 @@
 package com.endava.budgetplanner.authentication.ui.vm
 
 import androidx.lifecycle.ViewModel
-import com.endava.budgetplanner.authentication.ui.vm.states.RegisterState
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterDataState
 import com.endava.budgetplanner.common.utils.ValidationResult
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
@@ -18,25 +18,25 @@ class RegisterDataViewModel @Inject constructor(
     private val isNotEmptyValidator: MultipleValidator
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<RegisterState>(RegisterState.Empty)
+    private val _state = MutableStateFlow<RegisterDataState>(RegisterDataState.Empty)
     val state get() = _state.asStateFlow()
 
     fun handleFields(name: String, lastName: String) {
-        _state.value = RegisterState.ButtonState(isNotEmptyValidator.areValid(name, lastName))
+        _state.value = RegisterDataState.ButtonState(isNotEmptyValidator.areValid(name, lastName))
     }
 
     fun checkFieldsValidation(name: String, lastName: String) {
         if (handleValidationResult(nameValidator.isValid(name)) &&
             handleValidationResult(nameValidator.isValid(lastName))
         ) {
-            _state.value = RegisterState.NavigateToNext
+            _state.value = RegisterDataState.NavigateToNext
         }
     }
 
     private fun handleValidationResult(validationResult: ValidationResult): Boolean {
         return when (validationResult) {
             is ValidationResult.Error -> {
-                _state.value = RegisterState.Error(validationResult.textId)
+                _state.value = RegisterDataState.Error(validationResult.textId)
                 false
             }
             ValidationResult.Success -> true

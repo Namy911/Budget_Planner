@@ -23,21 +23,30 @@ class PasswordValidatorTest(private val passwordTestCase: PasswordTestCase) {
         @Parameterized.Parameters(name = "{0}-Password {1}-Expected")
         fun setParameters() = listOf(
             PasswordTestCase("Endava#2021", ValidationResult.Success),
-            PasswordTestCase("endava2021123456789012", ValidationResult.Success),
             PasswordTestCase("hello", ValidationResult.Error(R.string.password_length_error)),
-            PasswordTestCase("EndavaEndava", ValidationResult.Success),
+            PasswordTestCase(
+                "EndavaEndava",
+                ValidationResult.Error(R.string.password_validation_error)
+            ),
             PasswordTestCase(
                 "endava20211234567890123",
                 ValidationResult.Error(R.string.password_length_error)
             ),
             PasswordTestCase("Endava$2021", ValidationResult.Success),
-            PasswordTestCase("Endava!@#$%_-", ValidationResult.Success),
+            PasswordTestCase(
+                "Endava!@#$%_-",
+                ValidationResult.Error(R.string.password_validation_error)
+            ),
             PasswordTestCase(
                 "Endava^^",
                 ValidationResult.Error(R.string.password_validation_error)
             ),
             PasswordTestCase("*/*/*", ValidationResult.Error(R.string.password_length_error)),
-            PasswordTestCase("Endava#\$Endava", ValidationResult.Success),
+            PasswordTestCase(
+                "Endava#\$Endava",
+                ValidationResult.Error(R.string.password_validation_error)
+            ),
+            PasswordTestCase("Endava#2021.", ValidationResult.Success)
         )
     }
 }

@@ -49,6 +49,7 @@
 
     <style name="CustomAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurface">@color/alertdialog_background</item>
+        <item name="buttonBarNeutralButtonStyle">@style/NeutralBStyle</item>
         <item name="alertDialogStyle">@style/DialogShape</item>
     </style>
 
@@ -61,4 +62,7 @@
         <item name="cornerSize">@dimen/small_250</item>
     </style>
 
+    <style name="NeutralBStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue</item>
+    </style>
 </resources>

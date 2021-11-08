@@ -3,6 +3,7 @@ package com.endava.budgetplanner.authentication.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endava.budgetplanner.authentication.ui.vm.states.RegisterFinalState
+import com.endava.budgetplanner.common.preferences.LaunchPreferences
 import com.endava.budgetplanner.common.utils.Resource
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RegisterIndustryViewModel @Inject constructor(
+    private val launchPreferences: LaunchPreferences,
     private val repository: AuthenticationRepository,
     @NumberValidatorQualifier
     private val balanceValidator: Validator,
@@ -29,9 +31,13 @@ class RegisterIndustryViewModel @Inject constructor(
     fun register(user: User) = viewModelScope.launch {
         _state.value = RegisterFinalState.Loading
         val resource = repository.registerNewUser(user)
-        when (resource) {
-            is Resource.Error -> _state.value = RegisterFinalState.Error(resource.messageId)
-            is Resource.Success -> _state.value = RegisterFinalState.NavigateToWelcome
+        _state.value = when (resource) {
+            is Resource.Error -> RegisterFinalState.Error(resource.messageId)
+            is Resource.Success -> {
+                setLaunchPreference()
+                RegisterFinalState.NavigateToWelcome
+            }
+            Resource.ConnectionError -> RegisterFinalState.ConnectionError
         }
     }
 
@@ -45,5 +51,11 @@ class RegisterIndustryViewModel @Inject constructor(
             )
         else
             _state.value = RegisterFinalState.ButtonState(false)
+    }
+
+    private suspend fun setLaunchPreference() {
+        launchPreferences.edit { mutablePreferences ->
+            mutablePreferences[LaunchPreferences.LAUNCH_KEY] = true
+        }
     }
 }

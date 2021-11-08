@@ -10,6 +10,4 @@ interface AuthenticationRepository {
     suspend fun registerNewUser(user: User): Resource<Any>
 
     suspend fun login(userLogin: UserLogin): Resource<Token>
-
-    suspend fun getText(token: String): Resource<String>
 }

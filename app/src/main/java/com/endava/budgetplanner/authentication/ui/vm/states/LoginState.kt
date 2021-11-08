@@ -7,6 +7,7 @@ sealed class LoginState {
     data class NetworkError(@StringRes val textId: Int) : LoginState()
     data class ValidationError(@StringRes val textId: Int) : LoginState()
     data class ButtonState(val isEnabled: Boolean) : LoginState()
+    object ConnectionError : LoginState()
     object Empty : LoginState()
     object Loading : LoginState()
 }

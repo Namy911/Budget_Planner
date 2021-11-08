@@ -5,9 +5,7 @@ import com.endava.budgetplanner.common.validators.*
 import com.endava.budgetplanner.common.validators.contracts.MultipleValidator
 import com.endava.budgetplanner.common.validators.contracts.Validator
 import com.endava.budgetplanner.data.repo.AuthenticationRepositoryImpl
-import com.endava.budgetplanner.data.repo.SplashRepositoryImp
 import com.endava.budgetplanner.data.repo.contract.AuthenticationRepository
-import com.endava.budgetplanner.data.repo.contract.SplashRepository
 import com.endava.budgetplanner.di.annotations.*
 import com.endava.budgetplanner.di.other.MultiViewModelFactory
 import dagger.Binds
@@ -23,9 +21,6 @@ interface AppBindsModule {
     fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
-
-    @Binds
-    fun bindSplashRepository(imp: SplashRepositoryImp): SplashRepository
 
     @Binds
     @EmailValidatorQualifier

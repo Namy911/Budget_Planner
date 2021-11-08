@@ -3,10 +3,8 @@
     <!-- Registration -->
     <string name="name_validation_error">First / Last name should contain only alpha characters</string>
     <string name="name_length_error">First / Last name must be greater than 3 or equal to 22</string>
-    <string name="password_length_error">Password must be greater than 8 or equal to 22</string>
-    <string name="password_validation_error">Password is not valid</string>
+    <string name="password_validation_error">Please enter a valid password</string>
     <string name="email_validation_error">Please enter a valid email address</string>
-    <string name="email_length_error">Email must be greater than 8 or equal to 30</string>
     <string name="conflict_error">The request could not be processed because of conflict in the request.</string>
     <string name="bad_request_error">The server cannot or will not process the request due to some problems.</string>
     <string name="no_content_error">There is no content to send in the response body.</string>
@@ -24,7 +22,7 @@
     <string name="invalid_password_email_error">Incorrect username or password</string>
     <string name="unknown_error">Unknown error</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="please_wait">Please wait...</string>
+    <string name="please_wait">Please wait…</string>
     <string name="your_request_is_being_processed">Your request is being processed.</string>
     <string name="authentication_failed">Authentication Failed!</string>
     <string name="the_request_has_timed_out">The request has timed out.</string>
@@ -47,5 +45,9 @@
     <string name="password_not_matching">Passwords are not matching.</string>
     <string name="number_length_error">Initial balance must be smaller or equal to 5 digits</string>
     <string name="number_validation_error">Invalid initial balance</string>
-    <string name="error">An error occured</string>
+    <string name="error">An error occurred</string>
+    <string name="lost_internet_connection">No internet connection</string>
+    <string name="undefined">Undefined</string>
+    <string name="lost_internet_connection_mes">Turn on your Internet and retry.</string>
+    <string name="retry">Retry</string>
 </resources>

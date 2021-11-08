@@ -2,7 +2,6 @@ package com.endava.budgetplanner.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -35,7 +34,6 @@ class SplashActivity : AppCompatActivity() {
         observeState()
     }
 
-    //stub to delete
     private fun observeState() {
         lifecycleScope.launch {
             viewModel.splashState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
@@ -44,9 +42,13 @@ class SplashActivity : AppCompatActivity() {
                         SplashState.Loading -> {
                         }
                         is SplashState.LoadComplete -> {
-                            startActivity(MainActivity.newIntent(this@SplashActivity))
-                        }
-                        is SplashState.Error -> {
+                            startActivity(
+                                MainActivity.newIntent(
+                                    this@SplashActivity,
+                                    viewState.navigateToLogin
+                                )
+                            )
+                            finish()
                         }
                     }
                 }

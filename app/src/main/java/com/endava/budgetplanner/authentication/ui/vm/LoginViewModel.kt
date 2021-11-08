@@ -67,19 +67,10 @@ class LoginViewModel @Inject constructor(
                 is Resource.Success -> {
                     val token = resource.data.webToken
                     val tokenToSend = "$BEARER_PREFIX $token"
-                    getText(tokenToSend)
                     LoginState.Success(tokenToSend)
                 }
+                Resource.ConnectionError -> LoginState.ConnectionError
             }
-        }
-    }
-
-    //will be removed (for DEMO)
-    private suspend fun getText(token: String) {
-        val resource = authenticationRepository.getText(token)
-        when (resource) {
-            is Resource.Error -> _loginState.value = LoginState.NetworkError(resource.messageId)
-            is Resource.Success -> _loginState.value = LoginState.Success(resource.data)
         }
     }
 
