@@ -8,24 +8,25 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.endava.budgetplanner.authentication.ui.vm.RegisterDataViewModel
-import com.endava.budgetplanner.authentication.ui.vm.states.RegisterDataState
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterEvent
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterState
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
 import com.endava.budgetplanner.common.ext.provideAppComponent
 import com.endava.budgetplanner.data.models.user.User
-import com.endava.budgetplanner.databinding.RegisterDataFragmentBinding
+import com.endava.budgetplanner.databinding.FragmentRegisterDataBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "RegisterDataFragment"
 
-class RegisterDataFragment : BaseFragment<RegisterDataFragmentBinding>() {
+class RegisterDataFragment : BaseFragment<FragmentRegisterDataBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -71,35 +72,44 @@ class RegisterDataFragment : BaseFragment<RegisterDataFragmentBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         parent: Boolean
-    ): RegisterDataFragmentBinding {
-        return RegisterDataFragmentBinding.inflate(inflater, container, parent)
+    ): FragmentRegisterDataBinding {
+        return FragmentRegisterDataBinding.inflate(inflater, container, parent)
     }
 
     private fun subscribeToObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { state ->
-                    when (state) {
-                        is RegisterDataState.ButtonState -> binding.btnNext.isEnabled =
-                            state.isEnabled
-                        RegisterDataState.Empty -> {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.state.collectLatest { state ->
+                        when (state) {
+                            is RegisterState.ButtonState -> binding.btnNext.isEnabled =
+                                state.isEnabled
+                            RegisterState.Empty -> {
+                            }
                         }
-                        is RegisterDataState.Error -> showSnackBar(state.textId)
-                        RegisterDataState.NavigateToNext -> findNavController().navigate(
-                            RegisterDataFragmentDirections
-                                .actionRegisterDataFragmentToRegisterDataRolesFragment(
-                                    User(
-                                        firstName = getName(),
-                                        lastName = getSurname(),
-                                        password = args.user.password,
-                                        industry = null,
-                                        email = args.user.email,
-                                        initialBalance = null
-                                    )
-                                )
-                        )
                     }
                 }
+                launch {
+                    viewModel.channel.collectLatest { event ->
+                        when (event) {
+                            is RegisterEvent.Error -> showSnackBar(event.textId)
+                            RegisterEvent.NavigateNext -> findNavController().navigate(
+                                RegisterDataFragmentDirections
+                                    .actionRegisterDataFragmentToRegisterDataIndustryFragment(
+                                        User(
+                                            firstName = getName(),
+                                            lastName = getSurname(),
+                                            password = args.user.password,
+                                            industry = null,
+                                            email = args.user.email,
+                                            initialBalance = null
+                                        )
+                                    )
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 

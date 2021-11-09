@@ -9,12 +9,12 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.LoginViewModel
+import com.endava.budgetplanner.authentication.ui.vm.states.LoginEvent
 import com.endava.budgetplanner.authentication.ui.vm.states.LoginState
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
@@ -33,11 +33,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    private lateinit var loadingDialog: LoadingDialog
-
     private val viewModel by viewModels<LoginViewModel> {
         factory
     }
+    private var loadingDialog: LoadingDialog? = null
     private val textWatcher by lazy {
         DefaultTextWatcher {
             viewModel.handleFields(getEmail(), getPassword())
@@ -94,28 +93,29 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun subscribeToObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loginState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { state ->
-                    when (state) {
-                        is LoginState.ButtonState -> binding.buttonSignIn.isEnabled =
-                            state.isEnabled
-                        LoginState.Empty -> {
-                        }
-                        is LoginState.NetworkError -> {
-                            dismissLoadingDialog()
-                            showErrorDialog(state.textId)
-                        }
-                        is LoginState.Success -> {
-                            dismissLoadingDialog()
-                            LoginFragmentDirections.actionLoginFragmentToDashboardFragment(state.token)
-                        }
-                        is LoginState.ValidationError -> showSnackBar(state.textId)
-                        LoginState.Loading -> showLoadingDialog()
-                        LoginState.ConnectionError -> {
-                            showConnectionErrorDialog()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.loginState.collectLatest { state ->
+                        when (state) {
+                            is LoginState.ButtonState -> binding.buttonSignIn.isEnabled =
+                                state.isEnabled
+                            LoginState.Empty -> dismissLoadingDialog()
+                            LoginState.Loading -> showLoadingDialog()
                         }
                     }
                 }
+                launch {
+                    viewModel.channel.collectLatest { event ->
+                        when (event) {
+                            LoginEvent.ConnectionError -> showConnectionErrorDialog()
+                            is LoginEvent.NavigateNext -> LoginFragmentDirections
+                                .actionLoginFragmentToDashboardFragment(event.token)
+                            is LoginEvent.NetworkError -> showErrorDialog(event.textId)
+                            is LoginEvent.ValidationError -> showSnackBar(event.textId)
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -141,7 +141,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun getPassword() = binding.loginPassword.text.toString()
 
-    private fun showLoadingDialog() = loadingDialog.show(parentFragmentManager, LoadingDialog.TAG)
+    private fun showLoadingDialog() {
+        loadingDialog = LoadingDialog.newInstance(
+            getString(R.string.please_wait),
+            getString(R.string.your_request_is_being_processed)
+        )
+        loadingDialog?.show(parentFragmentManager, LoadingDialog.TAG)
+    }
 
-    private fun dismissLoadingDialog() = loadingDialog.dismiss()
+    private fun dismissLoadingDialog() = loadingDialog?.dismiss()
 }

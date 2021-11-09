@@ -12,7 +12,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
         container: ViewGroup?,
         parent: Boolean
     ): FragmentDashboardBinding {
-        return FragmentDashboardBinding.inflate(inflater, container, parent)
+        return FragmentDashboardBinding.inflate(inflater, container, false)
     }
-
 }

@@ -12,13 +12,14 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.RegisterIndustryViewModel
-import com.endava.budgetplanner.authentication.ui.vm.states.RegisterFinalState
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterIndustryEvent
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterIndustryState
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
 import com.endava.budgetplanner.common.dialogs.ErrorDialog
@@ -26,14 +27,14 @@ import com.endava.budgetplanner.common.dialogs.LoadingDialog
 import com.endava.budgetplanner.common.dialogs.OneButtonDialog
 import com.endava.budgetplanner.common.ext.provideAppComponent
 import com.endava.budgetplanner.data.models.user.User
-import com.endava.budgetplanner.databinding.RegisterUserRolesFragmentBinding
+import com.endava.budgetplanner.databinding.FragmentRegisterDataIndustryBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "RegisterDataIndustryFragment"
 
-class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBinding>() {
+class RegisterDataIndustryFragment : BaseFragment<FragmentRegisterDataIndustryBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -41,10 +42,11 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
     private val viewModel by viewModels<RegisterIndustryViewModel> {
         factory
     }
+
     private val args: RegisterDataIndustryFragmentArgs by navArgs()
     private var industryItem: String? = null
 
-    private lateinit var loadingDialog: LoadingDialog
+    private var loadingDialog: LoadingDialog? = null
     private val textWatcher by lazy {
         DefaultTextWatcher {
             viewModel.handleFields(getInitialBalance(), industryItem)
@@ -76,40 +78,47 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
         binding.edtInitialBalance.removeTextChangedListener(textWatcher)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.cancelJob()
+    }
+
     override fun setupViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
         parent: Boolean
-    ): RegisterUserRolesFragmentBinding {
-        return RegisterUserRolesFragmentBinding.inflate(inflater, container, parent)
+    ): FragmentRegisterDataIndustryBinding {
+        return FragmentRegisterDataIndustryBinding.inflate(inflater, container, parent)
     }
 
     private fun subscribeToObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { state ->
-                    when (state) {
-                        RegisterFinalState.Empty -> {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.state.collectLatest { state ->
+                        when (state) {
+                            RegisterIndustryState.Empty -> dismissLoadingDialog()
+                            RegisterIndustryState.Loading -> showLoadingDialog()
+                            is RegisterIndustryState.ButtonState -> binding.btnSignUp.isEnabled =
+                                state.isEnabled
                         }
-                        is RegisterFinalState.Error -> {
-                            dismissLoadingDialog()
-                            showErrorAlertDialog(state.textId)
-                        }
-                        RegisterFinalState.Loading -> showLoadingDialog()
-                        RegisterFinalState.NavigateToWelcome -> {
-                            dismissLoadingDialog()
-                            findNavController()
-                                .navigate(
-                                    RegisterDataIndustryFragmentDirections
-                                        .actionRegisterDataRolesFragmentToWelcomeFragment2()
-                                )
-                        }
-                        is RegisterFinalState.ButtonState -> binding.btnSignUp.isEnabled =
-                            state.isEnabled
-                        RegisterFinalState.ConnectionError -> showConnectionErrorDialog()
                     }
                 }
+                launch {
+                    viewModel.channel.collectLatest { event ->
+                        when (event) {
+                            RegisterIndustryEvent.ConnectionError -> showConnectionErrorDialog()
+                            is RegisterIndustryEvent.Error -> showErrorAlertDialog(event.textId)
+                            RegisterIndustryEvent.NavigateNext -> findNavController()
+                                .navigate(
+                                    RegisterDataIndustryFragmentDirections
+                                        .actionRegisterDataIndustryFragmentToWelcomeFragment()
+                                )
+                        }
+                    }
+                }
+            }
+
         }
     }
 
@@ -144,11 +153,11 @@ class RegisterDataIndustryFragment : BaseFragment<RegisterUserRolesFragmentBindi
             getString(R.string.please_wait),
             getString(R.string.your_request_is_being_processed)
         )
-        loadingDialog.show(parentFragmentManager, LoadingDialog.TAG)
+        loadingDialog?.show(parentFragmentManager, LoadingDialog.TAG)
     }
 
     private fun dismissLoadingDialog() {
-        loadingDialog.dismiss()
+        loadingDialog?.dismiss()
     }
 
     private fun getUser() = User(

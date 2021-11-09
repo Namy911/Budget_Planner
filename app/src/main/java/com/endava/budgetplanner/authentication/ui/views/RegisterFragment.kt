@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.endava.budgetplanner.R
 import com.endava.budgetplanner.authentication.ui.vm.RegisterViewModel
+import com.endava.budgetplanner.authentication.ui.vm.states.RegisterEvent
 import com.endava.budgetplanner.authentication.ui.vm.states.RegisterState
 import com.endava.budgetplanner.common.base.BaseFragment
 import com.endava.budgetplanner.common.callbacks.DefaultTextWatcher
@@ -63,12 +63,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             viewModel.checkFieldsValidation(getEmail(), getPassword(), getPasswordConf())
         }
         txtSignIn.setOnClickListener {
-            if (!findNavController().popBackStack(
-                    R.id.action_registerFragment_to_loginFragment,
-                    false
-                )
-            )
-                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+            findNavController()
+                .navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
     }
 
@@ -90,21 +86,40 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     private fun subscribeToObserver() {
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { state ->
-                    when (state) {
-                        is RegisterState.ButtonState -> binding.btnNext.isEnabled = state.isEnabled
-                        RegisterState.Empty -> {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.state.collectLatest { state ->
+                        when (state) {
+                            is RegisterState.ButtonState -> binding.btnNext.isEnabled =
+                                state.isEnabled
+                            RegisterState.Empty -> {
+                            }
                         }
-                        is RegisterState.Error -> showSnackBar(state.textId)
-                        RegisterState.NavigateToNext -> findNavController().navigate(
-                            RegisterFragmentDirections.actionRegisterFragmentToRegisterDataFragment(
-                                User(null, null, getPassword(), null, getEmail(), null)
-                            )
-                        )
                     }
                 }
+                launch {
+                    viewModel.channel.collectLatest { event ->
+                        when (event) {
+                            is RegisterEvent.Error -> showSnackBar(event.textId)
+                            RegisterEvent.NavigateNext -> findNavController()
+                                .navigate(
+                                    RegisterFragmentDirections
+                                        .actionRegisterFragmentToRegisterDataFragment(
+                                            User(
+                                                null,
+                                                null,
+                                                getPassword(),
+                                                null,
+                                                getEmail(),
+                                                null
+                                            )
+                                        )
+                                )
+                        }
+                    }
+
+                }
+            }
         }
     }
 

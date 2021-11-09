@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import com.endava.budgetplanner.authentication.ui.views.RegisterFragmentDirections
 import com.endava.budgetplanner.databinding.ActivityMainBinding
 
 private const val NAVIGATION_KEY = "navigation_key"
@@ -21,11 +21,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val navHost =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
         navController = navHost.navController
         val navigateToLogin = intent.getBooleanExtra(NAVIGATION_KEY, false)
         if (navigateToLogin)
-            navController?.navigate(R.id.action_global_loginFragment)
+            navController?.navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         setContentView(binding.root)
 
         navController?.addOnDestinationChangedListener { _, destination, _ ->
@@ -38,25 +38,11 @@ class MainActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
             setDisplayHomeAsUpEnabled(true)
         }
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         navController = null
-    }
-
-    override fun onBackPressed() {
-        if (isStartDestination(navController?.currentDestination)) {
-            finish()
-        } else {
-            navController?.popBackStack()
-        }
-    }
-
-    private fun isStartDestination(destination: NavDestination?): Boolean {
-        if (destination == null) return false
-        return destination.id == R.id.registerFragment || destination.id == R.id.loginFragment
     }
 
     companion object {

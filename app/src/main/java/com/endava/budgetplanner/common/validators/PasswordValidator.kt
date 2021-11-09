@@ -17,7 +17,7 @@ class PasswordValidator @Inject constructor() : Validator {
         return if ((field.length < MIN_LENGTH || field.length > MAX_LENGTH)
             || !regex.matches(field.trim())
         )
-            ValidationResult.Error(R.string.password_validation_error)
+            ValidationResult.Error(R.string.validation_error)
         else
             ValidationResult.Success
     }

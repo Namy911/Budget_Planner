@@ -8,6 +8,7 @@
     <string name="conflict_error">The request could not be processed because of conflict in the request.</string>
     <string name="bad_request_error">The server cannot or will not process the request due to some problems.</string>
     <string name="no_content_error">There is no content to send in the response body.</string>
+    <string name="validation_error">Entered credentials are invalid!</string>
     <!--Welcome-->
     <string name="welcome_title">Welcome!</string>
     <string name="welcome_message">Your account has been successfully registered and you can now proceed to sign in.</string>

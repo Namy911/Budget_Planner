@@ -2,6 +2,7 @@ package com.endava.budgetplanner.authentication.ui.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.endava.budgetplanner.authentication.ui.vm.states.LoginEvent
 import com.endava.budgetplanner.authentication.ui.vm.states.LoginState
 import com.endava.budgetplanner.common.utils.Resource
 import com.endava.budgetplanner.common.utils.ValidationResult
@@ -13,8 +14,10 @@ import com.endava.budgetplanner.di.annotations.EmailValidatorQualifier
 import com.endava.budgetplanner.di.annotations.IsNotEmptyValidatorQualifier
 import com.endava.budgetplanner.di.annotations.PasswordValidatorQualifier
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,22 +38,27 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Empty)
     val loginState get() = _loginState.asStateFlow()
 
+    private val _channel = Channel<LoginEvent>()
+    val channel get() = _channel.receiveAsFlow()
+
     fun handleFields(email: String, password: String) {
         _loginState.value = LoginState.ButtonState(isNotEmptyValidator.areValid(email, password))
     }
 
     fun checkFieldsValidation(email: String, password: String) {
-        if (handleValidationResult(emailValidator.isValid(email)) &&
-            handleValidationResult(passwordValidator.isValid(password))
-        ) {
-            login(email, password)
+        viewModelScope.launch {
+            if (handleValidationResult(emailValidator.isValid(email)) &&
+                handleValidationResult(passwordValidator.isValid(password))
+            ) {
+                login(email, password)
+            }
         }
     }
 
-    private fun handleValidationResult(validationResult: ValidationResult): Boolean {
+    private suspend fun handleValidationResult(validationResult: ValidationResult): Boolean {
         return when (validationResult) {
             is ValidationResult.Error -> {
-                _loginState.value = LoginState.ValidationError(validationResult.textId)
+                _channel.send(LoginEvent.ValidationError(validationResult.textId))
                 false
             }
             ValidationResult.Success -> true
@@ -62,15 +70,16 @@ class LoginViewModel @Inject constructor(
             _loginState.value = LoginState.Loading
             val user = UserLogin(email, password)
             val resource = authenticationRepository.login(user)
-            _loginState.value = when (resource) {
-                is Resource.Error -> LoginState.NetworkError(resource.messageId)
+            when (resource) {
+                is Resource.Error -> _channel.send(LoginEvent.NetworkError(resource.messageId))
                 is Resource.Success -> {
                     val token = resource.data.webToken
                     val tokenToSend = "$BEARER_PREFIX $token"
-                    LoginState.Success(tokenToSend)
+                    _channel.send(LoginEvent.NavigateNext(tokenToSend))
                 }
-                Resource.ConnectionError -> LoginState.ConnectionError
+                Resource.ConnectionError -> _channel.send(LoginEvent.ConnectionError)
             }
+            _loginState.value = LoginState.Loading
         }
     }
 
