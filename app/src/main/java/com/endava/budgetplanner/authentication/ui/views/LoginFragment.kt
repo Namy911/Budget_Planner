@@ -51,10 +51,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadingDialog = LoadingDialog.newInstance(
-            getString(R.string.please_wait),
-            getString(R.string.your_request_is_being_processed)
-        )
         subscribeToObserver()
     }
 

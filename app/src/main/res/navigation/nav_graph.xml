@@ -13,8 +13,8 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment"
-            app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
         <action
@@ -23,7 +23,7 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"
             app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out" />
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -34,14 +34,14 @@
             android:id="@+id/action_registerFragment_to_registerDataFragment"
             app:destination="@id/registerDataFragment"
             app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/scale_out"
-            app:popExitAnim="@anim/slide_in" />
+            app:popExitAnim="@anim/slide_in_left" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -54,9 +54,9 @@
             android:id="@+id/action_registerDataFragment_to_registerDataIndustryFragment"
             app:destination="@id/registerDataIndustryFragment"
             app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/scale_out"
-            app:popExitAnim="@anim/slide_in"/>
+            app:popExitAnim="@anim/slide_in_left"/>
         <argument
             android:name="user"
             app:argType="com.endava.budgetplanner.data.models.user.User" />
@@ -70,7 +70,7 @@
             android:id="@+id/action_registerDataIndustryFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment"
             app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_out_left"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
         <argument
@@ -86,9 +86,9 @@
             android:id="@+id/action_welcomeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/scale_in"
-            app:exitAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/scale_out"
-            app:popExitAnim="@anim/slide_in"/>
+            app:popExitAnim="@anim/slide_in_left"/>
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
