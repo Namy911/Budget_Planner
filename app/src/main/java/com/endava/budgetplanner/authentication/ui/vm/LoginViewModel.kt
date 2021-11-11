@@ -13,7 +13,6 @@ import com.endava.budgetplanner.data.repo.contract.AuthenticationRepository
 import com.endava.budgetplanner.di.annotations.EmailValidatorQualifier
 import com.endava.budgetplanner.di.annotations.IsNotEmptyValidatorQualifier
 import com.endava.budgetplanner.di.annotations.PasswordValidatorQualifier
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,8 +31,6 @@ class LoginViewModel @Inject constructor(
     @IsNotEmptyValidatorQualifier
     private val isNotEmptyValidator: MultipleValidator
 ) : ViewModel() {
-
-    private var loginJob: Job? = null
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Empty)
     val loginState get() = _loginState.asStateFlow()
@@ -66,7 +63,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun login(email: String, password: String) {
-        loginJob = viewModelScope.launch {
+        viewModelScope.launch {
             _loginState.value = LoginState.Loading
             val user = UserLogin(email, password)
             val resource = authenticationRepository.login(user)
@@ -81,9 +78,5 @@ class LoginViewModel @Inject constructor(
             }
             _loginState.value = LoginState.Loading
         }
-    }
-
-    fun cancelJob() {
-        loginJob?.cancel()
     }
 }

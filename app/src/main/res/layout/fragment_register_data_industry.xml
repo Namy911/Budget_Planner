@@ -110,11 +110,11 @@
         android:layout_marginTop="@dimen/small_100"
         android:ems="@integer/default_ems"
         android:hint="@string/txt_initial_balance2"
-        android:inputType="number"
+        android:inputType="number|numberDecimal"
         android:maxLines="@integer/max_lines"
-        android:text="@string/txt_initial_balance2"
         android:textSize="@dimen/font_27"
         android:textStyle="bold"
+        android:maxLength="@integer/max_balance_length"
         app:layout_constraintStart_toStartOf="@+id/txt_balance"
         app:layout_constraintTop_toBottomOf="@+id/txt_balance" />
 

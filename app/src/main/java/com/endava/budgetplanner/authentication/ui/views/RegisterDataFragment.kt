@@ -100,9 +100,7 @@ class RegisterDataFragment : BaseFragment<FragmentRegisterDataBinding>() {
                                             firstName = getName(),
                                             lastName = getSurname(),
                                             password = args.user.password,
-                                            industry = null,
-                                            email = args.user.email,
-                                            initialBalance = null
+                                            email = args.user.email
                                         )
                                     )
                             )

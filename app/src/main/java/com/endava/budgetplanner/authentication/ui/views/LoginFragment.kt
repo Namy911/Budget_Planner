@@ -74,11 +74,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.loginPassword.removeTextChangedListener(textWatcher)
     }
 
-    override fun onDestroyView() {
-        viewModel.cancelJob()
-        super.onDestroyView()
-    }
-
     override fun setupViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,7 +90,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                         when (state) {
                             is LoginState.ButtonState -> binding.buttonSignIn.isEnabled =
                                 state.isEnabled
-                            LoginState.Empty -> dismissLoadingDialog()
+                            LoginState.Empty -> loadingDialog?.dismiss()
                             LoginState.Loading -> showLoadingDialog()
                         }
                     }
@@ -144,6 +139,4 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         )
         loadingDialog?.show(parentFragmentManager, LoadingDialog.TAG)
     }
-
-    private fun dismissLoadingDialog() = loadingDialog?.dismiss()
 }

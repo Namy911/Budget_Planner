@@ -105,14 +105,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                                 .navigate(
                                     RegisterFragmentDirections
                                         .actionRegisterFragmentToRegisterDataFragment(
-                                            User(
-                                                null,
-                                                null,
-                                                getPassword(),
-                                                null,
-                                                getEmail(),
-                                                null
-                                            )
+                                            User(password = getPassword(), email = getEmail())
                                         )
                                 )
                         }

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +27,7 @@ import com.endava.budgetplanner.common.dialogs.ErrorDialog
 import com.endava.budgetplanner.common.dialogs.LoadingDialog
 import com.endava.budgetplanner.common.dialogs.OneButtonDialog
 import com.endava.budgetplanner.common.ext.provideAppComponent
+import com.endava.budgetplanner.common.ext.toMixedSize
 import com.endava.budgetplanner.data.models.user.User
 import com.endava.budgetplanner.databinding.FragmentRegisterDataIndustryBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -67,20 +69,22 @@ class RegisterDataIndustryFragment : BaseFragment<FragmentRegisterDataIndustryBi
 
     override fun onStart() {
         super.onStart()
-        binding.edtInitialBalance.addTextChangedListener(textWatcher)
+        binding.edtInitialBalance.apply {
+            addTextChangedListener(textWatcher)
+            doAfterTextChanged { text ->
+                text?.toString()?.let {
+                    viewModel.handleBalanceField(it)
+                }
+            }
+        }
         binding.btnSignUp.setOnClickListener {
-            viewModel.register(getUser())
+            viewModel.handleValidationResult(getInitialBalance(), getUser())
         }
     }
 
     override fun onStop() {
         super.onStop()
         binding.edtInitialBalance.removeTextChangedListener(textWatcher)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.cancelJob()
     }
 
     override fun setupViewBinding(
@@ -97,10 +101,21 @@ class RegisterDataIndustryFragment : BaseFragment<FragmentRegisterDataIndustryBi
                 launch {
                     viewModel.state.collectLatest { state ->
                         when (state) {
-                            RegisterIndustryState.Empty -> dismissLoadingDialog()
+                            RegisterIndustryState.Empty -> loadingDialog?.dismiss()
                             RegisterIndustryState.Loading -> showLoadingDialog()
                             is RegisterIndustryState.ButtonState -> binding.btnSignUp.isEnabled =
                                 state.isEnabled
+                            is RegisterIndustryState.BalanceFieldState -> {
+                                if (state.addPrefix) {
+                                    binding.edtInitialBalance.apply {
+                                        setText(state.text)
+                                        setSelection(length())
+                                    }
+                                }
+                                if (state.mixSize) {
+                                    setSpannableStringToBalance(state.text)
+                                }
+                            }
                         }
                     }
                 }
@@ -114,11 +129,23 @@ class RegisterDataIndustryFragment : BaseFragment<FragmentRegisterDataIndustryBi
                                     RegisterDataIndustryFragmentDirections
                                         .actionRegisterDataIndustryFragmentToWelcomeFragment()
                                 )
+                            is RegisterIndustryEvent.ValidationError -> showSnackBar(event.textId)
                         }
                     }
                 }
             }
+        }
+    }
 
+    private fun setSpannableStringToBalance(text: String) {
+        val span = text.toMixedSize(
+            resources.getDimensionPixelSize(R.dimen.font_27),
+            resources.getDimensionPixelSize(R.dimen.font_20),
+            '.'
+        )
+        binding.edtInitialBalance.apply {
+            setText(span)
+            setSelection(text.length)
         }
     }
 
@@ -144,7 +171,7 @@ class RegisterDataIndustryFragment : BaseFragment<FragmentRegisterDataIndustryBi
             getString(R.string.lost_internet_connection_mes),
             getString(R.string.retry)
         ) {
-            viewModel.register(getUser())
+            viewModel.handleValidationResult(getInitialBalance(), getUser())
         }.show(parentFragmentManager, OneButtonDialog.TAG)
     }
 
@@ -154,10 +181,6 @@ class RegisterDataIndustryFragment : BaseFragment<FragmentRegisterDataIndustryBi
             getString(R.string.your_request_is_being_processed)
         )
         loadingDialog?.show(parentFragmentManager, LoadingDialog.TAG)
-    }
-
-    private fun dismissLoadingDialog() {
-        loadingDialog?.dismiss()
     }
 
     private fun getUser() = User(

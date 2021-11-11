@@ -5,17 +5,20 @@ import com.endava.budgetplanner.common.utils.ValidationResult
 import com.endava.budgetplanner.common.validators.contracts.Validator
 import javax.inject.Inject
 
-private const val EMAIL_REGEX = "^[0-9]{5}$"
-private const val MAX_LENGTH = 5
+private const val BALANCE_REGEX = "^\\d{1,5}(\\.(\\d{1,2}))?$"
+private const val MIN_BALANCE = 0
+private const val MAX_BALANCE = 10000
 
 class BalanceValidator @Inject constructor() : Validator {
 
     override fun isValid(field: CharSequence): ValidationResult {
-        val regex = EMAIL_REGEX.toRegex()
-        return if (field.length > MAX_LENGTH)
+        val regex = BALANCE_REGEX.toRegex()
+        val balance = field.toString().toDouble()
+        return if (balance > MIN_BALANCE && balance < MAX_BALANCE && regex.matches(field))
+            ValidationResult.Success
+        else if (balance > MAX_BALANCE)
             ValidationResult.Error(R.string.number_length_error)
-        else if (!regex.matches(field.trim()))
+        else
             ValidationResult.Error(R.string.number_validation_error)
-        else ValidationResult.Success
     }
 }
