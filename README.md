@@ -1,20 +1,41 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Budget Planner
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Budget Planner is an Android app intended to help users better manage their budget by offering them information about monthly incomes and expenses.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Installation
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Clone this repository and import it into __Android Studio__
+`git clone https://MDDInternship@dev.azure.com/MDDInternship/BudgetPlannerJava/_git/Front-End`
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Android Version Targeting
+
+Budget Planner is built to work with Android API 31(S).__However__ minimum SDK support is 23(Marshmallow).
+
+## Build configuration
+
+This project was build on JDK 1.8
+
+## Build and Run:
+
+From Android studio:
+1. ___Run___ menu
+2. ___Run 'app'___
+
+## Generating APK
+
+From Android studio:
+1. ___Build___ menu
+2. ___Build Bundle(s)/APK(s)___
+3. Generated APK is located in ___[Project directory]\app\build\outputs\apk\debug___
+
+## Version control workflow
+
+We loosely use the "Git flow" approach: main is the release
+branch - it should always be releasable, and only merged into
+when we have tested and verified that everything works and is
+good to go.
+
+Daily development is done in the development branch. Features,
+bugfixes and other tasks are done as branches off of develop,
+then merged back into develop directly or via pull requests.
+
